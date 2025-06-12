@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>2025 Book Tracker - Dark Mode</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-dark text-light">
+
+  <div class="container py-5">
+    <h1 class="text-center mb-4">📚 Books I've Read in 2025</h1>
+
+    <!-- Import/Export Buttons -->
+    <div class="row mb-4">
+      <div class="col-12 text-center">
+        <button onclick="exportBooks()" class="btn btn-success me-2">Export Books</button>
+        <label for="importFile" class="btn btn-info">
+          Import Books
+          <input type="file" id="importFile" accept=".json" onchange="importBooks(event)" style="display: none;">
+        </label>
+      </div>
+    </div>
+
+    <!-- Book Form -->
+    <form id="bookForm" class="row g-3 mb-4">
+      <div class="col-md-5">
+        <input type="text" id="title" class="form-control bg-dark text-light border-light" placeholder="Book Title" required />
+      </div>
+      <div class="col-md-5">
+        <input type="text" id="author" class="form-control bg-dark text-light border-light" placeholder="Author" required />
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Add Book</button>
+      </div>
+    </form>
+
+    <!-- Book List -->
+    <ul id="bookList" class="list-group"></ul>
+  </div>
+
+  <!-- App JavaScript -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>

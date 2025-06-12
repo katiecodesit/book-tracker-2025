@@ -1,0 +1,28 @@
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+  
+  h1 {
+    font-weight: 600;
+  }
+  
+  input.form-control::placeholder {
+    color: #aaa;
+  }
+  
+  .list-group-item {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+    color: #e0e0e0;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+  }
