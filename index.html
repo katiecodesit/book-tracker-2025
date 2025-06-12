@@ -23,10 +23,11 @@
     <div class="row mb-4">
       <div class="col-12 text-center">
         <button onclick="exportBooks()" class="btn btn-success me-2">Export Books</button>
-        <label for="importFile" class="btn btn-info">
+        <label for="importFile" class="btn btn-info me-2">
           Import Books
           <input type="file" id="importFile" accept=".json" onchange="importBooks(event)" style="display: none;">
         </label>
+        <button onclick="updateAllBooks()" class="btn btn-warning">Update Book Info</button>
       </div>
     </div>
 

@@ -13,15 +13,17 @@ async function searchBookISBN(title, author) {
     
     if (data.items && data.items[0]) {
       const book = data.items[0].volumeInfo;
-      // Try to get ISBN-13 first, fall back to ISBN-10 if not available
       const isbn = book.industryIdentifiers?.find(id => id.type === 'ISBN_13')?.identifier ||
                   book.industryIdentifiers?.find(id => id.type === 'ISBN_10')?.identifier;
-      return isbn || null;
+      return {
+        isbn: isbn || null,
+        googleBooksId: data.items[0].id
+      };
     }
-    return null;
+    return { isbn: null, googleBooksId: null };
   } catch (error) {
     console.error('Error fetching ISBN:', error);
-    return null;
+    return { isbn: null, googleBooksId: null };
   }
 }
 
@@ -53,7 +55,11 @@ function renderBooks() {
       <div class="row w-100">
         <div class="col-5">${book.title}</div>
         <div class="col-3">${book.author}</div>
-        <div class="col-3">${book.isbn || '-'}</div>
+        <div class="col-3">
+          ${book.isbn 
+            ? `<a href="https://books.google.com/books?id=${book.googleBooksId}" target="_blank" class="text-info">${book.isbn}</a>` 
+            : '-'}
+        </div>
         <div class="col-1">
           <button class="btn btn-danger btn-sm" onclick="deleteBook(${index})">Delete</button>
         </div>
@@ -104,6 +110,41 @@ function importBooks(event) {
   }
 }
 
+async function updateAllBooks() {
+  const updateButton = document.querySelector('button[onclick="updateAllBooks()"]');
+  const originalButtonText = updateButton.innerHTML;
+  updateButton.innerHTML = 'Updating...';
+  updateButton.disabled = true;
+
+  try {
+    const updatedBooks = [];
+    for (const book of books) {
+      try {
+        const { isbn, googleBooksId } = await searchBookISBN(book.title, book.author);
+        updatedBooks.push({
+          ...book,
+          isbn: isbn || book.isbn,
+          googleBooksId: googleBooksId || book.googleBooksId
+        });
+      } catch (error) {
+        console.error(`Error updating book: ${book.title}`, error);
+        updatedBooks.push(book); // Keep the original book if update fails
+      }
+    }
+
+    books = updatedBooks;
+    saveBooks();
+    renderBooks();
+    alert('Books updated successfully!');
+  } catch (error) {
+    console.error('Error updating books:', error);
+    alert('Error updating books. Please try again.');
+  } finally {
+    updateButton.innerHTML = originalButtonText;
+    updateButton.disabled = false;
+  }
+}
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const title = titleInput.value.trim();
@@ -117,8 +158,8 @@ form.addEventListener('submit', async (e) => {
     submitButton.disabled = true;
     
     try {
-      const isbn = await searchBookISBN(title, author);
-      books.push({ title, author, isbn });
+      const { isbn, googleBooksId } = await searchBookISBN(title, author);
+      books.push({ title, author, isbn, googleBooksId });
       saveBooks();
       renderBooks();
       form.reset();
