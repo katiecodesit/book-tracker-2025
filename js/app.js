@@ -85,8 +85,8 @@ function saveBooks() {
 function updateTotals() {
   const totalBooks = books.length;
   const totalPages = books.reduce((sum, book) => sum + (book.pages || 0), 0);
-  document.querySelector('h3:nth-of-type(1)').textContent = `Total books read: ${totalBooks}`;
-  document.querySelector('h3:nth-of-type(2)').textContent = `Total pages read: ${totalPages}`;
+  document.querySelector('.row.justify-content-center .col-auto:nth-child(1) h4').textContent = `Total books read: ${totalBooks}`;
+  document.querySelector('.row.justify-content-center .col-auto:nth-child(2) h4').textContent = `Total pages read: ${totalPages}`;
 }
 
 function renderBooks() {
