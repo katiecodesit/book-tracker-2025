@@ -5,6 +5,7 @@ body {
   
   h1 {
     font-weight: 600;
+    font-family: "Playfair Display", serif;
   }
   
   input.form-control::placeholder {

@@ -52,7 +52,7 @@ function renderBooks() {
     const li = document.createElement('li');
     li.className = 'list-group-item d-flex align-items-center';
     li.innerHTML = `
-      <div class="row w-100">
+      <div class="row w-100 align-items-center">
         <div class="col-5">${book.title}</div>
         <div class="col-3">${book.author}</div>
         <div class="col-3">
@@ -60,8 +60,17 @@ function renderBooks() {
             ? `<a href="https://books.google.com/books?id=${book.googleBooksId}" target="_blank" class="text-info">${book.isbn}</a>` 
             : '-'}
         </div>
-        <div class="col-1">
-          <button class="btn btn-danger btn-sm" onclick="deleteBook(${index})">Delete</button>
+        <div class="col-1 text-end">
+          <div class="dropdown d-inline-block">
+            <button class="btn btn-link btn-sm text-light p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+              </svg>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><button class="dropdown-item text-danger" onclick="if(confirm('Are you sure you want to delete this book?')) deleteBook(${index})">Delete</button></li>
+            </ul>
+          </div>
         </div>
       </div>
     `;
@@ -70,9 +79,11 @@ function renderBooks() {
 }
 
 function deleteBook(index) {
-  books.splice(index, 1);
-  saveBooks();
-  renderBooks();
+  if (confirm('Are you sure you want to delete this book?')) {
+    books.splice(index, 1);
+    saveBooks();
+    renderBooks();
+  }
 }
 
 function exportBooks() {
